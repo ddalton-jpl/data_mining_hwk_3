@@ -11,6 +11,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -172,16 +173,20 @@ public class kMeansClustering {
 
     // extract the examples that belong to the same cluster into a .txt file.
     // Altogether, your program should output six .txt files
+    // Organize lines as comma-separated values
     public static void extractExamples(List<List<double[]>> clusters) {
         for (int i = 0; i < clusters.size(); i++) {
             List<double[]> cluster = clusters.get(i);
             try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter("cluster" + i + ".txt"));
+                PrintWriter writer = new PrintWriter("cluster" + i + ".txt", "UTF-8");
                 for (double[] point : cluster) {
-                    for (double value : point) {
-                        writer.write(value + " ");
+                    for (int j = 0; j < point.length; j++) {
+                        writer.print(point[j]);
+                        if (j != point.length - 1) {
+                            writer.print(",");
+                        }
                     }
-                    writer.write("\n");
+                    writer.println();
                 }
                 writer.close();
             } catch (IOException e) {
