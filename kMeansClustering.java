@@ -116,19 +116,6 @@ public class kMeansClustering {
         return centroids;
     }
 
-    // Calculate the sum of squared errors
-    public static double calculateSSE(List<List<double[]>> clusters, List<double[]> centroids) {
-        double sse = 0;
-        for (int i = 0; i < clusters.size(); i++) {
-            List<double[]> cluster = clusters.get(i);
-            double[] centroid = centroids.get(i);
-            for (double[] point : cluster) {
-                sse += Math.pow(calculateDistance(point, centroid), 2);
-            }
-        }
-        return sse;
-    }
-
     // Check if the centroids have converged
     public static boolean hasConverged(List<double[]> oldCentroids, List<double[]> newCentroids) {
         for (int i = 0; i < oldCentroids.size(); i++) {
@@ -147,7 +134,6 @@ public class kMeansClustering {
         List<double[]> centroids = initializeCentroids(data, numClusters);
         clusters = assignClusters(data, centroids);
         List<double[]> newCentroids = calculateCentroids(clusters);
-        double sse = calculateSSE(clusters, newCentroids);
         boolean hasConverged = hasConverged(centroids, newCentroids);
         int iteration = 0;
 
@@ -155,19 +141,8 @@ public class kMeansClustering {
             centroids = newCentroids;
             clusters = assignClusters(data, centroids);
             newCentroids = calculateCentroids(clusters);
-            sse = calculateSSE(clusters, newCentroids);
             hasConverged = hasConverged(centroids, newCentroids);
             iteration++;
-        }
-
-        System.out.println("SSE: " + sse);
-        System.out.println("Iterations: " + iteration);
-        System.out.println("Centroids: ");
-        for (double[] centroid : newCentroids) {
-            for (double value : centroid) {
-                System.out.print(value + " ");
-            }
-            System.out.println();
         }
     }
 
